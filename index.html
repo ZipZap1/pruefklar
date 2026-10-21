@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wartungsradar – Nie wieder eine Prüffrist verpassen</title>
+  <meta name="description" content="Wartungsradar zeigt Hausverwaltungen auf einen Blick, welche Prüfungen in welchem Objekt fällig sind, und erinnert rechtzeitig. Jetzt auf die Warteliste.">
+  <meta property="og:title" content="Wartungsradar – Nie wieder eine Prüffrist verpassen">
+  <meta property="og:description" content="Prüffristen für alle Objekte an einem Ort – mit Erinnerung, bevor es teuer wird.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0a0b0d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E1013'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23fff' stroke-width='2' opacity='.5'/%3E%3Ccircle cx='16' cy='16' r='4' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='22' cy='10' r='2.5' fill='%23F97316'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pricing.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="./" aria-label="Wartungsradar Startseite">
+        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x=".5" y=".5" width="31" height="31" rx="8" />
+          <circle cx="16" cy="16" r="9" class="logo__ring" />
+          <circle cx="16" cy="16" r="4" class="logo__core" />
+          <circle cx="22" cy="10" r="2.5" class="logo__blip" />
+        </svg>
+        Wartungsradar
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="#funktionen">Funktionen</a>
+        <a href="#fristen">Prüfintervalle</a>
+        <a href="#pakete">Pakete</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn--accent btn--sm" href="#warteliste">Auf die Warteliste</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 1. Hero -->
+    <section class="hero dark" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="badge"><span class="badge__dot" aria-hidden="true"></span>Bald verfügbar · Warteliste geöffnet</p>
+          <h1 id="hero-title">Nie wieder eine Prüffrist verpassen.</h1>
+          <p class="lead">Wartungsradar zeigt Hausverwaltungen auf einen Blick, welche Prüfung in welchem Objekt fällig ist – und erinnert rechtzeitig, bevor es teuer wird.</p>
+
+          <form class="signup" action="https://397383a5.sibforms.com/serve/MUIFAKKu_c0KNDK9ZJQ71wmBgbBcTOUfSWb6ZHKwGQdXDhFvYI_YKFbvnCyXpo2JchLD8o4nyJ7qCh7McmZ33s81aLLtS_A5wHlrq7ZSEXto9DhA-OBBb5UzvJIgWwzFiq5uM5OwH-ZPLqfIaCtj5PXP_lPjW4GFYnxerwlG7N5qCAhS0oseOeECzKMXKhThZy_e5AEn7sKzSlT50w==" method="post">
+            <div class="signup__row">
+              <label class="visually-hidden" for="email-hero">E-Mail-Adresse</label>
+              <input class="input" id="email-hero" type="email" name="EMAIL" autocomplete="email" placeholder="name@hausverwaltung.de" required>
+              <button class="btn btn--accent" type="submit">Auf die Warteliste</button>
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="OPT_IN" value="1" required>
+              <span>Ich stimme zu, per E-Mail über den Start von Wartungsradar und das Gründerplatz-Angebot informiert zu werden. Die Einwilligung kann ich jederzeit widerrufen, z.&nbsp;B. über den Abmeldelink in jeder E-Mail. Details in der <a href="datenschutz.html#warteliste">Datenschutzerklärung</a>.</span>
+            </label>
+            <input type="text" name="email_address_check" value="" hidden>
+            <input type="hidden" name="locale" value="de">
+            <input type="hidden" name="html_type" value="simple">
+            <input type="hidden" name="lists_30[]" value="3">
+          </form>
+
+          <ul class="chips" aria-label="Vorteile der Warteliste">
+            <li>Eintragen kostenlos</li>
+            <li>Keine Werbung</li>
+            <li>Jederzeit abmelden</li>
+          </ul>
+        </div>
+
+        <!-- Radar: Zentrum = heute, Ringe = 7 / 30 / 90 Tage. --a = Winkel (Grad), --r = Abstand in % der Breite -->
+        <div class="radar-wrap">
+          <div class="radar" role="img" aria-label="Beispielhafte Radar-Ansicht: Je näher eine Prüfung am Zentrum liegt, desto früher ist sie fällig; die Ringe stehen für 7, 30 und 90 Tage. Sicherheitsbeleuchtung, Lindenstraße 12: seit 18 Tagen überfällig. Rauchwarnmelder, Am Markt 4: in 7 Tagen fällig, Erinnerung versendet. Aufzug, Parkallee 7: in 23 Tagen fällig. Feuerlöscher, Lindenstraße 12: erledigt, Nachweis abgelegt.">
+            <p class="radar__hud"><span>Objektradar · Oktober 2026</span><span>3 Objekte · 19 Anlagen</span></p>
+            <div class="radar__scope">
+              <svg class="radar__grid" viewBox="0 0 400 400" aria-hidden="true">
+                <circle class="r-zone" cx="200" cy="200" r="64" />
+                <circle cx="200" cy="200" r="199" />
+                <circle class="r-ticks" cx="200" cy="200" r="182" />
+                <circle cx="200" cy="200" r="160" />
+                <circle cx="200" cy="200" r="112" />
+                <path d="M0 200H400M200 0V400" />
+                <path class="r-diag" d="M59 59L341 341M341 59L59 341" />
+                <text x="207" y="132">7 Tage</text>
+                <text x="207" y="84">30 Tage</text>
+                <text x="207" y="36">90 Tage</text>
+                <text class="r-core" x="200" y="228" text-anchor="middle">Heute</text>
+              </svg>
+              <span class="radar__sweep"></span>
+              <span class="blip s-overdue" style="--a:315;--r:7.5"></span>
+              <span class="blip s-soon" style="--a:60;--r:16"></span>
+              <span class="blip s-soon" style="--a:180;--r:24.4"></span>
+              <span class="blip s-done" style="--a:250;--r:47"></span>
+              <span class="blip blip--sm s-plan" style="--a:28;--r:42.8"></span>
+              <span class="blip blip--sm s-plan" style="--a:45;--r:44.8"></span>
+              <span class="radar__core"></span>
+            </div>
+            <div class="scard scard--a">
+              <span class="pill s-overdue">Überfällig · seit 18 Tagen</span>
+              <strong>Sicherheitsbeleuchtung</strong>
+              <span>Lindenstraße 12 · fällig 03.10.</span>
+            </div>
+            <div class="scard scard--b">
+              <span class="pill s-soon">In 7 Tagen</span>
+              <strong>Rauchwarnmelder</strong>
+              <span>Am Markt 4 · Erinnerung versendet</span>
+            </div>
+            <div class="scard scard--c">
+              <span class="pill s-done">Erledigt</span>
+              <strong>Feuerlöscher</strong>
+              <span>Lindenstraße 12 · Nachweis abgelegt</span>
+            </div>
+          </div>
+          <p class="radar__legend">
+            <span class="key s-overdue">Überfällig</span>
+            <span class="key s-soon">Bald fällig</span>
+            <span class="key s-done">Erledigt</span>
+            <span class="key s-plan">Geplant</span>
+            <span class="radar__hint">Je näher am Zentrum, desto dringender.</span>
+          </p>
+          <!-- Stoppt Radar, Laufband und übrige Animationen ohne JavaScript (CSS :has); bewusst ohne name und außerhalb der Formulare -->
+          <label class="motion-toggle"><input type="checkbox" id="motion-pause">Animationen anhalten</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Normen-Laufband -->
+    <section class="norms dark" aria-label="Regelwerke, auf die Wartungsradar ausgerichtet ist">
+      <div class="container norms__inner">
+        <p class="norms__label">Für wiederkehrende Prüfungen nach</p>
+        <div class="marquee">
+          <div class="marquee__track">
+            <ul>
+              <li><b>DIN 14676-1</b> Rauchwarnmelder</li>
+              <li><b>DIN 14406-4</b> Feuerlöscher</li>
+              <li><b>DIN EN 50172</b> Sicherheitsbeleuchtung</li>
+              <li><b>DIN VDE V 0108-100-1</b> Sicherheitsbeleuchtung</li>
+              <li><b>BetrSichV</b> Aufzüge</li>
+              <li><b>DGUV Vorschrift 3</b> Elektrische Anlagen</li>
+              <li><b>DIN EN 1176-7</b> Spielplätze</li>
+            </ul>
+            <ul aria-hidden="true">
+              <li><b>DIN 14676-1</b> Rauchwarnmelder</li>
+              <li><b>DIN 14406-4</b> Feuerlöscher</li>
+              <li><b>DIN EN 50172</b> Sicherheitsbeleuchtung</li>
+              <li><b>DIN VDE V 0108-100-1</b> Sicherheitsbeleuchtung</li>
+              <li><b>BetrSichV</b> Aufzüge</li>
+              <li><b>DGUV Vorschrift 3</b> Elektrische Anlagen</li>
+              <li><b>DIN EN 1176-7</b> Spielplätze</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Produktvorschau -->
+    <section class="showcase" aria-label="Produktvorschau">
+      <div class="container">
+        <figure class="app">
+          <div class="app__frame" role="img" aria-label="Beispielansicht der geplanten Anwendung: Liste fälliger Prüfungen mit Status überfällig, bald fällig, erledigt und geplant, daneben ein Monatskalender für Oktober 2026 und eine E-Mail-Erinnerung: In 7 Tagen fällig, Rauchwarnmelder, Am Markt 4.">
+            <div class="app__bar"><span></span><span></span><span></span><em>Wartungsradar – Übersicht</em></div>
+            <div class="app__body">
+              <div class="app__side">
+                <b class="app__brand"><i class="brand-chip"></i>Wartungsradar</b>
+                <ul class="app__nav">
+                  <li class="is-active">Übersicht</li>
+                  <li>Objekte</li>
+                  <li>Prüfungen</li>
+                  <li>Kalender</li>
+                  <li>Nachweise</li>
+                </ul>
+                <p class="app__label">Objekte</p>
+                <ul class="app__nav">
+                  <li><i class="dot s-overdue"></i>Lindenstraße 12</li>
+                  <li><i class="dot s-soon"></i>Am Markt 4</li>
+                  <li><i class="dot s-soon"></i>Parkallee 7</li>
+                </ul>
+              </div>
+              <div class="app__main">
+                <div class="app__head">
+                  <div><strong>Fällige Prüfungen</strong><span class="app__meta">Oktober 2026 · 3 Objekte</span></div>
+                  <div class="seg"><span class="is-on">Alle</span><span>Überfällig</span><span>Bald fällig</span><span>Erledigt</span></div>
+                </div>
+                <div class="kpis">
+                  <div class="kpi s-overdue"><b>1</b>Überfällig</div>
+                  <div class="kpi s-soon"><b>2</b>In 30&nbsp;Tagen</div>
+                  <div class="kpi s-done"><b>1</b>Erledigt</div>
+                </div>
+                <div class="rows">
+                  <div class="row row--head"><span>Prüfung</span><span>Grundlage</span><span>Fällig</span><span>Status</span><span></span></div>
+                  <div class="row row--alert"><span>Sicherheitsbeleuchtung<small>Lindenstraße 12</small></span><span class="row__norm">DIN EN 50172</span><span class="row__date">03.10.2026</span><span><i class="pill s-overdue">Überfällig</i></span><span class="avatar">MK</span></div>
+                  <div class="row"><span>Rauchwarnmelder<small>Am Markt 4</small></span><span class="row__norm">DIN 14676‑1</span><span class="row__date">28.10.2026</span><span><i class="pill s-soon">In 7 Tagen</i></span><span class="avatar">JS</span></div>
+                  <div class="row"><span>Aufzug · Hauptprüfung<small>Parkallee 7</small></span><span class="row__norm">BetrSichV</span><span class="row__date">13.11.2026</span><span><i class="pill s-soon">In 23 Tagen</i></span><span class="avatar">MK</span></div>
+                  <div class="row"><span>Feuerlöscher<small>Lindenstraße 12</small></span><span class="row__norm">DIN 14406‑4</span><span class="row__date">02.09.2026</span><span><i class="pill s-done">Erledigt</i></span><span class="avatar">TB</span></div>
+                  <div class="row"><span>Spielplatz · Hauptinspektion<small>Parkallee 7</small></span><span class="row__norm">DIN EN 1176‑7</span><span class="row__date">15.04.2027</span><span><i class="pill s-plan">Geplant</i></span><span class="avatar">JS</span></div>
+                </div>
+              </div>
+              <div class="app__aside">
+                <div class="cal">
+                  <div class="cal__head"><strong>Oktober 2026</strong><span>‹&nbsp;&nbsp;›</span></div>
+                  <div class="cal__grid">
+                    <span class="wd">Mo</span><span class="wd">Di</span><span class="wd">Mi</span><span class="wd">Do</span><span class="wd">Fr</span><span class="wd">Sa</span><span class="wd">So</span>
+                    <span></span><span></span><span></span><span>1</span><span>2</span><span class="s-overdue">3</span><span>4</span>
+                    <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span>
+                    <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span>
+                    <span>19</span><span>20</span><span class="is-today">21</span><span>22</span><span>23</span><span>24</span><span>25</span>
+                    <span>26</span><span>27</span><span class="s-soon">28</span><span>29</span><span>30</span><span>31</span><span></span>
+                  </div>
+                </div>
+                <div class="next">
+                  <span class="next__label">Nächste Erinnerung</span>
+                  <strong>Aufzug · Hauptprüfung</strong>
+                  <span>Parkallee 7 · Fr, 30.10., 08:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="toast" aria-hidden="true">
+            <span class="toast__from"><i class="brand-chip"></i>Wartungsradar · heute, 08:00</span>
+            <strong>In 7 Tagen fällig: Rauchwarnmelder, Am Markt 4</strong>
+            <span>Wartungsfirma beauftragen und Termin eintragen.</span>
+          </div>
+          <figcaption class="app__note">Beispielansicht · Entwurf der geplanten Oberfläche, keine echten Daten</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. Problem -->
+    <section class="section" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="section__head section__head--split">
+          <p class="eyebrow">Das Problem</p>
+          <h2 id="problem-title">Prüffristen in Excel sind eine <span class="squiggle">Haftungsfalle</span>.</h2>
+          <p class="lead">Solange es um zwei, drei Häuser geht, reicht eine Tabelle. Mit jedem weiteren Objekt wächst die Liste – und das Risiko, dass eine Frist durchrutscht.</p>
+        </div>
+        <ol class="problems">
+          <li class="problem reveal">
+            <div class="stage" aria-hidden="true">
+              <div class="sheet">
+                <p class="sheet__file">Fristen_final_v3_NEU.xlsx</p>
+                <div class="sheet__grid">
+                  <span>Objekt</span><span>Anlage</span><span>Letzte</span><span>Nächste</span>
+                  <span>Linden 12</span><span>Sich.-Bel.</span><span>10/25</span><span class="s-overdue">10/26 ?</span>
+                  <span>Markt 4</span><span>RWM</span><span>10/25</span><span class="is-warn">??</span>
+                  <span>Parkallee</span><span>Aufzug</span><span>–</span><span class="s-overdue">#WERT!</span>
+                  <span>Linden 12</span><span>Feuerl.</span><span>09/24</span><span></span>
+                </div>
+              </div>
+              <span class="sticky">Aufzug – wer prüft?</span>
+            </div>
+            <span class="problem__num" aria-hidden="true">01</span>
+            <h3>Excel-Chaos</h3>
+            <p>Jedes Objekt, jede Anlage, jede Frist in einer anderen Tabelle – gepflegt von dem, der gerade Zeit hat.</p>
+          </li>
+          <li class="problem reveal">
+            <div class="stage" aria-hidden="true">
+              <div class="cal cal--card">
+                <div class="cal__head"><strong>Oktober 2026</strong><span>KW 40–43</span></div>
+                <div class="cal__grid">
+                  <span class="wd">Mo</span><span class="wd">Di</span><span class="wd">Mi</span><span class="wd">Do</span><span class="wd">Fr</span><span class="wd">Sa</span><span class="wd">So</span>
+                  <span></span><span></span><span></span><span>1</span><span>2</span><span class="s-overdue is-missed">3</span><span>4</span>
+                  <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span>
+                  <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span>
+                  <span>19</span><span>20</span><span class="is-today">21</span><span>22</span><span>23</span><span>24</span><span>25</span>
+                </div>
+              </div>
+              <span class="flag"><svg class="i" viewBox="0 0 24 24"><path d="M12 4 2.8 19.5h18.4z" /><path d="M12 10v4M12 17h.01" /></svg>Seit 18 Tagen überfällig</span>
+            </div>
+            <span class="problem__num" aria-hidden="true">02</span>
+            <h3>Verpasste Prüffristen</h3>
+            <p>Sicherheitsbeleuchtung jährlich, Rauchwarnmelder jährlich, Aufzug alle zwei Jahre. Wer hat das für 40 Objekte im Kopf?</p>
+          </li>
+          <li class="problem reveal">
+            <div class="stage" aria-hidden="true">
+              <div class="doc">
+                <b>Prüfnachweis</b>
+                <small>Sicherheitsbeleuchtung · Lindenstraße 12</small>
+                <i></i><i></i><i></i>
+                <em>Nachweis nicht auffindbar</em>
+              </div>
+              <span class="note"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m4 7 8 6 8-6" /></svg>Rückfrage der Versicherung</span>
+            </div>
+            <span class="problem__num" aria-hidden="true">03</span>
+            <h3>Haftung</h3>
+            <p>Nach einem Schaden fragt die Versicherung zuerst nach dem Prüfnachweis. Fehlt er, wird es für Betreiber und Verwaltung schnell teuer.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. Lösung -->
+    <section class="section section--tint" id="funktionen" aria-labelledby="solution-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Die Lösung</p>
+          <h2 id="solution-title">Drei Schritte. Dann behält Wartungsradar den Überblick.</h2>
+        </div>
+        <ol class="bento">
+          <li class="tile reveal">
+            <div class="stage" aria-hidden="true">
+              <div class="mini orow"><i class="obj">LS</i><b>Lindenstraße 12</b><span>6 Anlagen</span></div>
+              <div class="mini orow"><i class="obj">AM</i><b>Am Markt 4</b><span>4 Anlagen</span></div>
+              <div class="mini orow"><i class="obj">PA</i><b>Parkallee 7</b><span>9 Anlagen</span></div>
+              <div class="orow orow--add">+ Objekt anlegen</div>
+            </div>
+            <div class="tile__text">
+              <span class="tile__num" aria-hidden="true">01</span>
+              <h3>Objekte anlegen</h3>
+              <p>Liegenschaften und ihre prüfpflichtigen Anlagen einmal erfassen – von der Notleuchte bis zum Aufzug.</p>
+            </div>
+          </li>
+          <li class="tile reveal">
+            <div class="stage" aria-hidden="true">
+              <div class="mini spec">
+                <div class="spec__title"><b>Rauchwarnmelder</b><span>Am Markt 4</span></div>
+                <div class="field"><span>Intervall</span><b>Jährlich · DIN 14676‑1</b></div>
+                <div class="field"><span>Letzte Wartung</span><b>28.10.2025</b></div>
+                <div class="field field--hl"><span>Nächste Fälligkeit</span><b>28.10.2026</b></div>
+                <span class="file">Prüfprotokoll_2025.pdf</span>
+              </div>
+            </div>
+            <div class="tile__text">
+              <span class="tile__num" aria-hidden="true">02</span>
+              <h3>Prüfungen zuordnen</h3>
+              <p>Intervall festlegen, Prüfprotokoll hochladen. Die nächste Fälligkeit rechnet Wartungsradar selbst aus.</p>
+            </div>
+          </li>
+          <li class="tile tile--wide reveal">
+            <div class="tile__text">
+              <span class="tile__num" aria-hidden="true">03</span>
+              <h3>Rechtzeitig erinnert werden</h3>
+              <p>Erinnerung per E-Mail, bevor eine Frist abläuft – an die Person, die zuständig ist.</p>
+              <ol class="cadence" aria-label="Beispiel für den Ablauf der Erinnerungen">
+                <li class="s-soon"><b>14 Tage vorher</b><span>Erinnerung an die zuständige Person</span></li>
+                <li class="s-soon"><b>7 Tage vorher</b><span>Zweite Erinnerung</span></li>
+                <li class="s-overdue"><b>Überfällig</b><span>Hinweis, bis ein Nachweis vorliegt</span></li>
+              </ol>
+            </div>
+            <div class="stage" aria-hidden="true">
+              <div class="mini mail">
+                <div class="mail__from"><i class="brand-chip"></i><b>Wartungsradar</b><span>14.10., 08:00</span></div>
+                <b class="mail__subj">In 14 Tagen fällig: Rauchwarnmelder, Am Markt 4</b>
+                <p>An: J. Sommer (zuständig) – Wartungsfirma beauftragen und Termin eintragen.</p>
+              </div>
+              <ol class="flow">
+                <li><i class="pill s-soon">E-Mail-Erinnerung</i></li>
+                <li><i class="pill s-plan">Termin eingetragen</i></li>
+                <li><i class="pill s-done">Nachweis abgelegt</i></li>
+              </ol>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 4. Prüfintervalle / Zeitleiste -->
+    <section class="section dark" id="fristen" aria-labelledby="fristen-title">
+      <div class="container">
+        <div class="section__head section__head--split">
+          <p class="eyebrow">Prüfintervalle</p>
+          <h2 id="fristen-title">Jede Anlage hat ihren eigenen Takt.</h2>
+          <p class="lead">Wartungsradar rechnet aus dem Intervall jeder Anlage die nächste Fälligkeit aus und zeigt, was in den kommenden Monaten ansteht – über alle Objekte hinweg.</p>
+        </div>
+        <figure class="tl">
+          <figcaption class="tl__cap"><strong>Beispiel: Fristenplan für ein Wohn- und Geschäftshaus</strong><span>September 2026 – August 2027</span></figcaption>
+          <div class="tl__months" aria-hidden="true">
+            <span></span>
+            <div class="tl__scale"><i class="tl__now">Heute</i><span>Sep</span><span>Okt</span><span>Nov</span><span>Dez</span><span>Jan</span><span>Feb</span><span>Mär</span><span>Apr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Aug</span></div>
+          </div>
+          <ul class="tl__rows">
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Sicherheitsbeleuchtung</strong>
+                <span>Regelmäßige Funktionsprüfungen, jährliche Prüfung · DIN&nbsp;EN&nbsp;50172 / DIN&nbsp;VDE&nbsp;V&nbsp;0108‑100‑1</span>
+                <span class="visually-hidden">Im Beispiel fällig am 03.10.2026, überfällig.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark s-overdue" style="--at:.088"><em>03.10.</em></span></div>
+            </li>
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Rauchwarnmelder</strong>
+                <span>Jährliche Inspektion und Wartung · DIN&nbsp;14676‑1</span>
+                <span class="visually-hidden">Im Beispiel fällig am 28.10.2026, in 7 Tagen.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark s-soon" style="--at:.156"><em>28.10.</em></span></div>
+            </li>
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Aufzug</strong>
+                <span>Hauptprüfung alle 2 Jahre, dazwischen Zwischenprüfung · BetrSichV</span>
+                <span class="visually-hidden">Hauptprüfung im Beispiel am 13.11.2026, Zwischenprüfung im November 2027.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark s-soon" style="--at:.2"><em>13.11.</em></span><span class="tl__next">Zwischenprüfung 11/2027 →</span></div>
+            </li>
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Feuerlöscher</strong>
+                <span>Instandhaltung spätestens alle 2 Jahre · DIN&nbsp;14406‑4</span>
+                <span class="visually-hidden">Im Beispiel am 02.09.2026 erledigt, nächste Instandhaltung spätestens im September 2028.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark mark--start s-done" style="--at:.012"><em>02.09. ✓</em></span><span class="tl__next">Nächste 09/2028 →</span></div>
+            </li>
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Spielplatz</strong>
+                <span>Jährliche Hauptinspektion plus regelmäßige Sicht- und Funktionskontrollen · DIN&nbsp;EN&nbsp;1176‑7</span>
+                <span class="visually-hidden">Hauptinspektion im Beispiel am 15.04.2027 geplant.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark s-plan" style="--at:.619"><em>15.04.</em></span></div>
+            </li>
+            <li class="tl__row">
+              <div class="tl__label">
+                <strong>Elektrische Anlagen</strong>
+                <span>Ortsfeste Anlagen in Betrieben, typischerweise alle 4 Jahre · DGUV&nbsp;Vorschrift&nbsp;3</span>
+                <span class="visually-hidden">Prüfung im Beispiel am 12.06.2027 geplant.</span>
+              </div>
+              <div class="tl__track" aria-hidden="true"><span class="mark s-plan" style="--at:.778"><em>12.06.</em></span></div>
+            </li>
+          </ul>
+          <ul class="legend" aria-hidden="true">
+            <li class="key s-overdue">Überfällig</li>
+            <li class="key s-soon">Bald fällig</li>
+            <li class="key s-done">Erledigt</li>
+            <li class="key s-plan">Geplant</li>
+          </ul>
+        </figure>
+        <p class="footnote">Typische Intervalle zur Orientierung, keine Rechtsberatung. Maßgeblich sind die jeweils geltenden Vorschriften, Normen und Herstellerangaben für Ihre Anlage.</p>
+      </div>
+    </section>
+
+    <!-- 5. Für wen -->
+    <section class="section" aria-labelledby="audience-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Für wen</p>
+          <h2 id="audience-title">Für alle, die für Gebäude geradestehen.</h2>
+        </div>
+        <div class="cards">
+          <article class="acard reveal">
+            <span class="acard__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V4.5h10V21M14 9h6v12M2 21h20M7.5 8h3M7.5 12h3M7.5 16h3M17 13h0M17 17h0" /></svg></span>
+            <h3>Hausverwaltungen</h3>
+            <p>WEG- und Mietverwaltung mit vielen Objekten und wenig Zeit für Fristenlisten.</p>
+            <ul class="tags" aria-label="Typische Einsatzbereiche"><li>WEG-Verwaltung</li><li>Mietverwaltung</li></ul>
+          </article>
+          <article class="acard reveal">
+            <span class="acard__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5l-8.8 8.8a2.1 2.1 0 0 1-3-3l8.8-8.8a4 4 0 0 1 5-5l-2.6 2.6.4 2.2 2.2.4" /></svg></span>
+            <h3>Facility-Dienstleister</h3>
+            <p>Wartungsaufträge für mehrere Kunden planen und Nachweise sauber ablegen.</p>
+            <ul class="tags" aria-label="Typische Einsatzbereiche"><li>Mehrere Auftraggeber</li><li>Wartungsplanung</li></ul>
+          </article>
+          <article class="acard reveal">
+            <span class="acard__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.4-3.4 8.2-8 9-4.6-.8-8-4.6-8-9V6l8-3z" /><path d="M8.5 12.2l2.4 2.4 4.6-4.9" /></svg></span>
+            <h3>Betreiber &amp; Eigentümer</h3>
+            <p>Gewerbeobjekte, Praxen oder Schulen, bei denen die Betreiberpflicht im Haus liegt.</p>
+            <ul class="tags" aria-label="Typische Einsatzbereiche"><li>Gewerbe</li><li>Praxen</li><li>Schulen</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Pakete: in Entwicklung, bewusst ohne Preise -->
+    <section class="section dark" id="pakete" aria-labelledby="pakete-title">
+      <div class="container">
+        <div class="section__head section__head--split">
+          <p class="eyebrow">Pakete · in Entwicklung</p>
+          <h2 id="pakete-title">Ein Paket für jede Verwaltungsgröße.</h2>
+          <p class="lead">Wartungsradar ist noch in Entwicklung. Die Pakete richten sich nach der Zahl Ihrer Objekte; Preise stehen noch nicht fest. Wer auf der Warteliste steht, erfährt sie zuerst.</p>
+        </div>
+
+        <ul class="plans" role="list">
+          <li class="plan reveal">
+            <div class="plan__top"><h3>Start</h3><span class="plan__status">Geplant</span></div>
+            <p class="plan__fit">Für kleine Verwaltungen</p>
+            <p class="plan__scope">bis&nbsp;10&nbsp;Objekte</p>
+            <ul class="plan__list" role="list">
+              <li>Fristenübersicht über alle Objekte</li>
+              <li>Prüfintervalle und automatisch berechnete Fälligkeiten</li>
+              <li>Zuständige je Anlage festlegen</li>
+              <li>E-Mail-Erinnerungen an die Zuständigen</li>
+              <li>Prüfnachweise je Anlage ablegen</li>
+            </ul>
+            <p class="plan__price">Preis folgt vor dem Start</p>
+          </li>
+          <li class="plan reveal">
+            <div class="plan__top"><h3>Professional</h3><span class="plan__status">Geplant</span></div>
+            <p class="plan__fit">Für wachsende Bestände</p>
+            <p class="plan__scope">bis&nbsp;30&nbsp;Objekte</p>
+            <ul class="plan__list" role="list">
+              <li>Alle Funktionen aus Start</li>
+            </ul>
+            <p class="plan__price">Preis folgt vor dem Start</p>
+          </li>
+          <li class="plan reveal">
+            <div class="plan__top"><h3>Business</h3><span class="plan__status">Geplant</span></div>
+            <p class="plan__fit">Für große Verwaltungen</p>
+            <p class="plan__scope">bis&nbsp;80&nbsp;Objekte</p>
+            <ul class="plan__list" role="list">
+              <li>Alle Funktionen aus Start</li>
+              <li>Mehr als 80 Objekte nach Absprache</li>
+              <li>Persönliche Hilfe bei der Einrichtung</li>
+            </ul>
+            <p class="plan__price">Preis folgt vor dem Start</p>
+          </li>
+        </ul>
+        <p class="footnote">Funktionsumfang vorläufig; er kann sich bis zum Start noch ändern.</p>
+
+        <aside class="founder reveal" aria-labelledby="founder-title">
+          <div class="founder__copy">
+            <p class="founder__kicker">Gründerplätze · begrenzt auf 25</p>
+            <h3 id="founder-title">Gestalten Sie Wartungsradar mit.</h3>
+            <p>Die ersten 25 bestätigten Anmeldungen auf der Warteliste – Verwaltungen, Dienstleister und Betreiber – erhalten das Angebot eines Gründerplatzes, in der Reihenfolge der Bestätigung. Ob Sie dazugehören, teilen wir Ihnen per E-Mail mit; ob Sie den Platz annehmen, entscheiden Sie dann.</p>
+            <ul class="chips" role="list" aria-label="Das erhalten Gründerplätze">
+              <li>Vorzugspreis im ersten Vertragsjahr</li>
+              <li>Im zweiten Vertragsjahr höchstens der Listenpreis zum Start</li>
+              <li>Direkter Draht zur Entwicklung</li>
+            </ul>
+            <p class="founder__deal">Im Gegenzug bitten wir um zwei kurze Feedback-Gespräche während der Entwicklung.</p>
+          </div>
+          <a class="btn btn--accent" href="#warteliste">Für einen Gründerplatz eintragen</a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section--tint" id="faq" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div class="section__head">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Häufige Fragen</h2>
+          <p class="lead">Wartungsradar ist in Entwicklung. Was heute schon feststeht, lesen Sie hier.</p>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Welche Prüfungen kann ich mit Wartungsradar verwalten?</summary>
+            <p>Jede wiederkehrende Prüfung mit festem Intervall – zum Beispiel Sicherheitsbeleuchtung, Rauchwarnmelder, Feuerlöscher, Aufzüge, Spielplätze oder elektrische Anlagen.</p>
+          </details>
+          <details>
+            <summary>Ersetzt Wartungsradar die Prüfung durch eine Fachfirma?</summary>
+            <p>Nein. Wartungsradar organisiert Fristen, Zuständigkeiten und Nachweise. Die Prüfungen selbst führen weiterhin befähigte Personen, Fachfirmen oder Prüfstellen durch.</p>
+          </details>
+          <details>
+            <summary>Was kostet Wartungsradar?</summary>
+            <p>Die Preise stehen noch nicht fest. Geplant sind drei <a href="#pakete">Pakete</a> nach Anzahl Ihrer Objekte. Wer auf der Warteliste steht, erfährt die Preise zuerst; die ersten 25 bestätigten Anmeldungen erhalten das Angebot eines Gründerplatzes.</p>
+          </details>
+          <details>
+            <summary>Wo werden die Daten gespeichert?</summary>
+            <p>Geplant ist ein Hosting auf Servern in Deutschland bzw. der EU.</p>
+          </details>
+          <details>
+            <summary>Was passiert mit meiner E-Mail-Adresse?</summary>
+            <p>Wir nutzen sie nur, um Sie über den Start von Wartungsradar und das Gründerplatz-Angebot zu informieren. Abmelden können Sie sich jederzeit über den Link in jeder E-Mail.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Zweite Anmeldung -->
+    <section class="cta dark" id="warteliste" aria-labelledby="cta-title">
+      <div class="container cta__inner">
+        <p class="eyebrow">Warteliste</p>
+        <h2 id="cta-title">Seien Sie beim Start dabei.</h2>
+        <p class="lead">Tragen Sie sich ein – wir melden uns vor dem Start mit den Preisen und, falls Sie zu den ersten 25 gehören, mit Ihrem Gründerplatz-Angebot.</p>
+
+        <form class="signup signup--wide" action="https://397383a5.sibforms.com/serve/MUIFAKKu_c0KNDK9ZJQ71wmBgbBcTOUfSWb6ZHKwGQdXDhFvYI_YKFbvnCyXpo2JchLD8o4nyJ7qCh7McmZ33s81aLLtS_A5wHlrq7ZSEXto9DhA-OBBb5UzvJIgWwzFiq5uM5OwH-ZPLqfIaCtj5PXP_lPjW4GFYnxerwlG7N5qCAhS0oseOeECzKMXKhThZy_e5AEn7sKzSlT50w==" method="post">
+          <div class="signup__row">
+            <label class="visually-hidden" for="email-cta">E-Mail-Adresse</label>
+            <input class="input" id="email-cta" type="email" name="EMAIL" autocomplete="email" placeholder="name@hausverwaltung.de" required>
+            <label class="visually-hidden" for="company-cta">Firma (optional)</label>
+            <input class="input" id="company-cta" type="text" name="FIRMA" autocomplete="organization" placeholder="Firma (optional)">
+            <button class="btn btn--accent" type="submit">Auf die Warteliste</button>
+          </div>
+          <label class="consent">
+            <input type="checkbox" name="OPT_IN" value="1" required>
+            <span>Ich stimme zu, per E-Mail über den Start von Wartungsradar und das Gründerplatz-Angebot informiert zu werden. Die Einwilligung kann ich jederzeit widerrufen, z.&nbsp;B. über den Abmeldelink in jeder E-Mail. Details in der <a href="datenschutz.html#warteliste">Datenschutzerklärung</a>.</span>
+          </label>
+          <input type="text" name="email_address_check" value="" hidden>
+          <input type="hidden" name="locale" value="de">
+          <input type="hidden" name="html_type" value="simple">
+          <input type="hidden" name="lists_30[]" value="3">
+        </form>
+
+        <ul class="chips" aria-label="Vorteile der Warteliste">
+          <li>Eintragen kostenlos</li>
+          <li>Keine Werbung</li>
+          <li>Jederzeit abmelden</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span>© 2026 Wartungsradar</span>
+      <nav aria-label="Rechtliches">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
