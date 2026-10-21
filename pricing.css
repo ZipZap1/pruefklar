@@ -1,4 +1,4 @@
-/* Wartungsradar – Abschnitt "Pakete" (in Entwicklung, bewusst ohne Preise)
+/* Prüfklar – Abschnitt "Pakete" (in Entwicklung, bewusst ohne Preise)
    Wird nach style.css geladen und nutzt dessen Tokens. */
 
 .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
