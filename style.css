@@ -654,6 +654,9 @@ a { color: inherit; }
 .cta h2 { max-width: 14ch; font-size: clamp(2.5rem, 1.1rem + 5vw, 4.5rem); line-height: 1; letter-spacing: -0.035em; }
 .cta .lead { text-wrap: balance; }
 .cta .chips { justify-content: center; }
+.cta__call { margin-top: 0.5rem; color: var(--night-muted); font-size: 0.9375rem; text-wrap: balance; }
+.cta__call a { color: var(--night-text); font-weight: 600; text-underline-offset: 3px; }
+.cta__call a:hover { color: var(--accent-soft); }
 
 /* Footer */
 .site-footer { padding-block: 2rem; color: var(--night-muted); border-top: 1px solid var(--night-line); font-size: 0.875rem; }

@@ -1,4 +1,4 @@
-/* Prüfklar – Abschnitt "Pakete" (in Entwicklung, bewusst ohne Preise)
+/* Prüfklar – Abschnitt "Pakete" (geplante Preise, unverbindlich)
    Wird nach style.css geladen und nutzt dessen Tokens. */
 
 .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
@@ -18,17 +18,21 @@
 }
 
 .plan__fit { color: var(--night-muted); font-size: 0.9375rem; }
-/* Umfang (Objektzahl): Zahl und Einheit bleiben zusammen, damit es nicht wie ein Preis wirkt */
-.plan__scope { color: var(--night-text); font-size: 1.75rem; font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; }
+/* Umfang (Objektzahl): Zahl und Einheit bleiben zusammen; der Preis darunter ist die große Zahl */
+.plan__scope { margin-top: -0.5rem; color: var(--night-text); font-size: 1rem; font-weight: 600; }
+
+.plan__price { display: grid; gap: 0.375rem; padding-top: 1rem; border-top: 1px solid var(--night-line); }
+.plan__amount { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.5rem; color: var(--night-muted); font-size: 0.875rem; }
+.plan__amount strong {
+  color: var(--night-text); font-size: 2.25rem; font-weight: 600; line-height: 1.05;
+  letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+}
+.plan__founder { color: var(--accent-soft); font-size: 0.875rem; font-weight: 500; }
+.plan__founder strong { font-weight: 700; }
 
 .plan__list { display: grid; gap: 0.625rem; margin: 0.25rem 0 0; padding: 1.25rem 0 0; border-top: 1px solid var(--night-line); list-style: none; font-size: 0.9375rem; }
 .plan__list li { display: flex; gap: 0.625rem; }
 .plan__list li::before { content: "✓"; content: "✓" / ""; flex: none; color: #47cd89; font-weight: 700; }
-
-.plan__price {
-  margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--night-line);
-  color: var(--accent-soft); font-size: 0.9375rem; font-weight: 600;
-}
 
 /* Gründerplatz: das einzige hervorgehobene Element des Abschnitts */
 .founder {
@@ -65,7 +69,7 @@
   }
   .plan > :not(.plan__list) { grid-column: 1; }
   .plan__list { grid-column: 2; grid-row: 1 / -1; align-self: start; margin: 0; padding: 0 0 0 2rem; border-top: 0; border-left: 1px solid var(--night-line); }
-  .plan__price { align-self: end; margin-top: 0; }
+  .plan__price { align-self: start; }
 }
 
 @media (max-width: 560px) {
