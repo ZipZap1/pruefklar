@@ -180,7 +180,13 @@
 
   const icsStamp = (date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const icsDay = (time) => isoDate(time).replace(/-/g, '');
-  const randomId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`);
+  /* Feste UID: derselbe Termin (Anlage, Fälligkeit, Bezeichnung) ersetzt beim erneuten Import den alten Eintrag statt ihn zu doppeln */
+  const fnv1a = (text) => {
+    let hash = 0x811c9dc5;
+    for (const byte of new TextEncoder().encode(text)) hash = Math.imul(hash ^ byte, 0x01000193);
+    return (hash >>> 0).toString(36);
+  };
+  const eventUid = (entry, due, label) => `${entry.id}-${icsDay(due)}${label ? `-${fnv1a(label.toLowerCase())}` : ''}@pruefklar`;
 
   const buildIcs = ({ entry, last, label, leadDays, result }) => {
     const title = `Prüfung fällig: ${entry.anlage} – ${entry.pruefung}${label ? ` (${label})` : ''}`;
@@ -197,7 +203,7 @@
     const lines = [
       'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Pruefklar//Fristenrechner//DE', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `UID:${randomId()}@pruefklar`,
+      `UID:${eventUid(entry, result.due, label)}`,
       `DTSTAMP:${icsStamp(new Date())}`,
       `DTSTART;VALUE=DATE:${icsDay(result.due)}`,
       `DTEND;VALUE=DATE:${icsDay(addDays(result.due, 1))}`,
