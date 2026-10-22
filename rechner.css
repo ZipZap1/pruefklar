@@ -1,0 +1,212 @@
+/* Prüfklar – Fristenrechner (rechner.html)
+   Wird nach style.css geladen und nutzt dessen Tokens. Der Rechner sitzt auf Dunkel wie der
+   Hero der Startseite; Vergleich, Intervalltabelle und FAQ stehen in hellen Lese-Sektionen. */
+
+/* hidden gilt immer, auch gegen display: grid/flex der Bausteine (rechner.js schaltet nur über hidden) */
+[hidden] { display: none !important; }
+
+/* Kopf mit Rechner */
+.calc-hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(3rem, 7vw, 5rem) clamp(3.5rem, 7vw, 5.5rem); }
+
+/* Radar-Ringe als Echo der Startseite, hinter dem Rechner */
+.calc-hero::before {
+  content: ""; position: absolute; top: 45%; left: 75%; z-index: -1;
+  width: min(1400px, 240vw); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%);
+  background:
+    repeating-radial-gradient(circle, transparent 0 69px, rgb(255 255 255 / 0.055) 70px 71px),
+    radial-gradient(circle, rgb(249 115 22 / 0.22), transparent 48%);
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 58%);
+  mask-image: radial-gradient(circle, #000 12%, transparent 58%);
+}
+
+.calc-hero__grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: start; gap: clamp(2.5rem, 5vw, 4.5rem); }
+.calc-hero__copy { position: sticky; top: calc(64px + 2.5rem); display: grid; justify-items: start; gap: 1.5rem; padding-top: clamp(0rem, 2vw, 1.5rem); } /* bleibt beim langen Rechner sichtbar */
+.calc-hero h1 { font-size: clamp(2.25rem, 1.25rem + 3.6vw, 3.5rem); line-height: 1.02; letter-spacing: -0.03em; }
+
+/* Kennzahlen wie auf einem Datenblatt: großer Wert, kleine Beschriftung darunter */
+.specs { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; margin: 0.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--night-line); }
+.specs div { display: flex; flex-direction: column-reverse; gap: 0.375rem; }
+.specs dt { color: var(--night-muted); font-size: 0.8125rem; }
+.specs dd { margin: 0; color: var(--night-text); font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); font-weight: 600; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; }
+
+/* Rechner-Karte */
+.calc {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 45%), var(--night-2);
+  border: 1px solid var(--night-line); border-radius: var(--r-panel);
+  box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.85);
+  color-scheme: dark; /* native Datumsauswahl und Auswahllisten in dunkler Variante */
+}
+
+.calc__noscript { color: var(--night-muted); }
+.calc__noscript a { color: var(--night-text); text-underline-offset: 3px; }
+.calc__form { display: grid; gap: 1.375rem; }
+.calc__step { display: grid; gap: 0.5rem; }
+.calc__label { display: flex; align-items: center; gap: 0.625rem; color: var(--night-text); font-weight: 600; }
+
+.calc__num {
+  display: grid; flex: none; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: rgb(249 115 22 / 0.16); color: var(--accent-soft); font-size: 0.75rem; font-weight: 700;
+}
+
+.calc__label--sub { color: var(--night-muted); font-size: 0.875rem; font-weight: 500; }
+.calc__form .input, .calc__select { flex: none; width: 100%; background: rgb(255 255 255 / 0.05); box-shadow: inset 0 0 0 1px var(--field-line); }
+
+.calc__select {
+  height: 46px; padding: 0 2.5rem 0 0.875rem; border: 0; border-radius: var(--r-control);
+  color: #fff; font: inherit; font-size: 1rem; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%239ba2ac' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.875rem center; background-size: 12px 8px;
+}
+
+.calc__select:focus-visible { outline: 2px solid var(--accent-lite); outline-offset: -2px; }
+.calc__select option, .calc__select optgroup { background: var(--night-2); color: var(--night-text); }
+.calc__form input[type="date"] { min-height: 46px; -webkit-appearance: none; appearance: none; }
+.calc__form input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+.calc__form input[aria-invalid="true"] { box-shadow: inset 0 0 0 1.5px #f97066; }
+.calc__error { color: #f97066; font-size: 0.875rem; }
+
+/* Norm und Intervall der gewählten Prüfung */
+.calc__facts { display: grid; gap: 0.75rem; padding: 0.875rem 1rem; background: rgb(255 255 255 / 0.03); border: 1px solid var(--night-line); border-radius: 12px; }
+.calc__dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 1.25rem; margin: 0; }
+.calc__dl dt { color: var(--night-muted); font-size: 0.75rem; font-weight: 500; }
+.calc__dl dd { margin: 0.125rem 0 0; color: var(--night-text); font-size: 0.875rem; font-weight: 500; line-height: 1.45; }
+.calc__hint { color: var(--night-muted); font-size: 0.8125rem; line-height: 1.5; }
+
+/* Ergebnis */
+.calc__result {
+  display: grid; justify-items: start; gap: 0.75rem; padding: 1.25rem;
+  background: radial-gradient(120% 140% at 100% 0%, rgb(249 115 22 / 0.13), transparent 60%), rgb(255 255 255 / 0.03);
+  border: 1px solid var(--night-line); border-radius: 16px;
+}
+
+.calc__kicker { color: var(--night-muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.calc__due {
+  color: #fff; font-size: clamp(1.625rem, 1.2rem + 1.8vw, 2.25rem); font-weight: 600;
+  line-height: 1.1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+}
+
+.calc__result .pill { padding: 0.25rem 0.75rem; font-size: 0.8125rem; }
+.calc__tolerance, .calc__overdue { color: var(--night-muted); font-size: 0.875rem; }
+.calc__overdue strong { color: var(--night-text); }
+.calc__actions { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; width: 100%; padding-top: 0.25rem; }
+.calc__lead { display: grid; gap: 0.375rem; color: var(--night-muted); font-size: 0.8125rem; }
+.calc__lead .calc__select { width: auto; min-width: 11rem; }
+.calc__kicker sup { margin-left: 0.125rem; font-size: 0.625rem; }
+.calc__fine { color: var(--night-muted); font-size: 0.75rem; line-height: 1.5; } /* #9ba2ac auf Dunkel >= 4.5:1 */
+.calc__more { color: var(--night-muted); font-size: 0.875rem; }
+.calc__more a { color: var(--night-text); font-weight: 600; text-underline-offset: 3px; }
+.calc__more a:hover { color: var(--accent-soft); }
+
+.btn .i { width: 16px; height: 16px; margin-right: 0.5rem; }
+
+/* Einmalige E-Mail-Erinnerung (Brevo-Formular) */
+.calc__remind { display: grid; gap: 0.875rem; max-width: none; padding-top: 1.5rem; border-top: 1px solid var(--night-line); }
+.calc__remind h2 { color: var(--night-text); font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.015em; }
+.calc__remind fieldset { display: grid; gap: 0.875rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+.calc__remind fieldset:disabled { opacity: 0.55; }
+.calc__remind .signup__row { background: rgb(255 255 255 / 0.03); }
+.calc__note { color: var(--night-muted); font-size: 0.875rem; }
+.calc__note strong { color: var(--night-text); font-weight: 600; }
+.calc__unavailable { padding: 0.625rem 0.875rem; border: 1px dashed rgb(255 255 255 / 0.28); border-radius: var(--r-control); color: var(--night-muted); font-size: 0.875rem; }
+
+/* Kostenlos vs. Prüfklar */
+.compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
+
+.compare__card {
+  display: grid; align-content: start; gap: 1rem; padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel);
+}
+
+.compare__card.dark { background: linear-gradient(180deg, rgb(255 255 255 / 0.04), transparent 60%), var(--night-2); border-color: var(--night-2); }
+.compare__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+.compare__top h3 { font-size: 1.25rem; }
+
+.compare__tag {
+  padding: 0.2rem 0.625rem; border-radius: 999px; background: var(--done-bg); color: var(--done-fg);
+  font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+}
+
+.compare__card.dark .compare__tag { background: rgb(249 115 22 / 0.16); color: var(--accent-soft); }
+.compare__price { color: var(--ink); font-size: 0.9375rem; font-weight: 600; }
+.compare__card.dark .compare__price { color: var(--night-text); }
+.checks { display: grid; gap: 0.625rem; margin: 0; padding: 0; list-style: none; }
+.checks li { position: relative; padding-left: 1.75rem; }
+
+.checks li::before {
+  content: ""; position: absolute; top: 0.3em; left: 0; width: 1.05rem; height: 1.05rem; border-radius: 50%;
+  background: var(--done-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-5' fill='none' stroke='%23067647' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+}
+
+.compare__card.dark .checks li::before {
+  background: rgb(249 115 22 / 0.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-5' fill='none' stroke='%23fdba74' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+}
+
+.compare__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 0.5rem; }
+.compare__cta a:not(.btn) { color: var(--night-text); font-weight: 600; text-underline-offset: 3px; }
+.compare__cta a:not(.btn):hover { color: var(--accent-soft); }
+
+/* Intervalltabelle: Quelle der Daten für den Rechner */
+.ptable-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); overflow: hidden; }
+.ptable { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.5; }
+.ptable th, .ptable td { padding: 1rem 1.25rem; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+.ptable thead th { border-top: 0; background: var(--tint); color: var(--muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.ptable tbody th { width: 26%; color: var(--ink); font-weight: 600; }
+.ptable tbody th small { display: block; margin-top: 0.125rem; color: var(--ink-soft); font-size: 0.875rem; font-weight: 400; }
+.ptable .ptable__interval { width: 17%; color: var(--ink); font-weight: 500; }
+.ptable .ptable__norm { width: 19%; color: var(--ink-soft); font-family: var(--mono); font-size: 0.8125rem; }
+.ptable .ptable__who { width: 16%; color: var(--ink-soft); }
+.ptable .ptable__hint { color: var(--muted); font-size: 0.875rem; }
+.ptable tbody tr:hover { background: #fcfcfb; }
+.section .footnote { color: var(--muted); }
+
+/* Weitere Fristen: aufklappbar, ohne JavaScript */
+.ptable-more { margin-top: 1rem; }
+
+.ptable-more > summary {
+  display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.625rem 1rem;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); font-size: 0.9375rem; font-weight: 600; cursor: pointer; list-style: none;
+}
+
+.ptable-more > summary::-webkit-details-marker { display: none; }
+
+.ptable-more > summary::after {
+  content: ""; width: 10px; height: 10px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) center / 10px 1.5px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) center / 1.5px 10px no-repeat;
+  transition: transform 0.25s var(--ease);
+}
+
+.ptable-more > summary:hover { border-color: var(--ink); }
+.ptable-more[open] > summary { margin-bottom: 1rem; }
+.ptable-more[open] > summary::after { transform: rotate(45deg); }
+
+/* Responsive */
+@media (max-width: 960px) {
+  .calc-hero__grid, .compare { grid-template-columns: minmax(0, 1fr); }
+  .calc-hero__copy { position: static; padding-top: 0; }
+  .ptable tbody th { width: auto; }
+}
+
+@media (max-width: 760px) {
+  /* Tabelle als Karten: jede Zeile ein Block, Spaltennamen aus data-label */
+  .ptable thead { display: none; }
+  .ptable, .ptable tbody, .ptable tr, .ptable th, .ptable td { display: block; width: auto; }
+  .ptable tr { padding: 1rem 1.125rem; border-top: 1px solid var(--line); }
+  .ptable tbody tr:first-child { border-top: 0; }
+  .ptable th, .ptable td { padding: 0; border: 0; }
+  .ptable td { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 0.75rem; margin-top: 0.5rem; }
+  .ptable td::before { content: attr(data-label); color: var(--muted); font-family: var(--font); font-size: 0.8125rem; font-weight: 500; }
+  .ptable .ptable__interval, .ptable .ptable__norm, .ptable .ptable__who { width: auto; }
+  .calc__dl { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .calc__actions > * { width: 100%; }
+  .calc__lead .calc__select { width: 100%; }
+  .ptable td { grid-template-columns: 1fr; gap: 0.125rem; }
+}

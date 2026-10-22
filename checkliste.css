@@ -1,0 +1,71 @@
+/* Prüfklar – Checklisten-Seite (checkliste.html)
+   Wird nach style.css geladen und nutzt dessen Tokens. Aufbau wie der Rechner: Anfordern auf Dunkel,
+   Inhalt, Aufbau und FAQ in hellen Lese-Sektionen. Kein JavaScript: Solange das Brevo-Formular nicht
+   freigeschaltet ist, sperrt fieldset[disabled] die Felder und blendet den Hinweis ein. */
+
+/* Kopf mit Formular und Vorschau */
+.dl-hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(3rem, 7vw, 5rem) clamp(3.5rem, 7vw, 5.5rem); }
+
+/* Radar-Ringe als Echo der Startseite, hinter der Vorschau */
+.dl-hero::before {
+  content: ""; position: absolute; top: 50%; left: 78%; z-index: -1;
+  width: min(1400px, 240vw); aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%);
+  background:
+    repeating-radial-gradient(circle, transparent 0 69px, rgb(255 255 255 / 0.055) 70px 71px),
+    radial-gradient(circle, rgb(249 115 22 / 0.22), transparent 48%);
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 58%);
+  mask-image: radial-gradient(circle, #000 12%, transparent 58%);
+}
+
+.dl-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(2.5rem, 5vw, 4.5rem); }
+.dl-hero__copy { display: grid; justify-items: start; gap: 1.5rem; }
+.dl-hero h1 { font-size: clamp(2.25rem, 1.25rem + 3.6vw, 3.5rem); line-height: 1.02; letter-spacing: -0.03em; }
+
+.dl-form__fields { display: grid; gap: 0.875rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+.dl-form__fields:disabled { opacity: 0.55; }
+.dl-form__fields:disabled .btn { cursor: not-allowed; }
+.dl-form__soon { display: none; color: var(--accent-soft); font-size: 0.875rem; font-weight: 600; }
+.dl-form__fields:disabled ~ .dl-form__soon { display: block; }
+
+/* Vorschau: Tabellenseite hinten rechts, Deckblatt vorne links */
+.dl-preview { position: relative; width: 100%; max-width: 620px; aspect-ratio: 1.2; margin: 0; justify-self: center; }
+
+.dl-preview img {
+  position: absolute; width: 84%; height: auto; border-radius: 6px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 40px 80px -30px rgb(0 0 0 / 0.9);
+}
+
+.dl-preview__page { top: 0; right: 0; rotate: 3deg; }
+.dl-preview__cover { bottom: 0; left: 0; rotate: -2.5deg; }
+
+/* Inhalt */
+.dl-topics { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.dl-topic { display: grid; align-content: start; gap: 0.375rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.dl-topic__num { color: var(--accent-ink); font-size: 0.8125rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dl-topic h3 { font-size: 1.0625rem; }
+.dl-topic__count { color: var(--ink); font-size: 0.875rem; font-weight: 600; }
+.dl-topic p:last-child { color: var(--muted); font-size: 0.875rem; }
+
+/* Aufbau */
+.dl-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.dl-feature { display: grid; align-content: start; gap: 0.625rem; padding: 1.75rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); }
+.dl-feature p { color: var(--muted); }
+.dl-feature > :first-child { min-height: 4.25rem; margin-bottom: 0.5rem; }
+
+/* Verbindlichkeit wie im PDF: gefüllt schwarz, gefüllt orange, Linie, gestrichelt */
+.dl-badges { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 0.5rem; padding: 0; list-style: none; }
+.dl-badge { padding: 0.25rem 0.625rem; border-radius: 6px; font-size: 0.8125rem; font-weight: 700; }
+.dl-badge--gesetz { background: var(--ink); color: #fff; }
+.dl-badge--arbeitsschutz { background: var(--accent); color: var(--ink); }
+.dl-badge--norm { box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); }
+.dl-badge--empfehlung { border: 1.5px dashed var(--muted); color: var(--muted); }
+
+.dl-fill { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-content: end; color: var(--muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.dl-fill span { display: grid; gap: 0.375rem; }
+.dl-fill i { display: block; height: 1.75rem; border-bottom: 1.5px solid var(--ink); background: linear-gradient(transparent 60%, var(--soon-bg) 60%); }
+.dl-feature__big { color: var(--ink); font-size: 3.5rem; font-weight: 600; line-height: 1; letter-spacing: -0.04em; }
+
+@media (max-width: 960px) {
+  .dl-hero__grid, .dl-features { grid-template-columns: 1fr; }
+  .dl-preview { max-width: 520px; }
+}

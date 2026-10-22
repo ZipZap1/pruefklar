@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'">
+  <title>Prüffristen-Rechner: nächste Prüfung berechnen – Prüfklar</title>
+  <meta name="description" content="Kostenloser Prüffristen-Rechner: Anlage wählen, Datum der letzten Prüfung eingeben und die nächste Fälligkeit sehen – mit Norm, typischem Intervall und Kalendereintrag. Ohne Konto.">
+  <meta property="og:title" content="Prüffristen-Rechner – Prüfklar">
+  <meta property="og:description" content="Wann ist die nächste Prüfung fällig? Norm, typisches Intervall und Fälligkeit für Sicherheitsbeleuchtung, Rauchwarnmelder, Aufzug und mehr – kostenlos, ohne Konto.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zipzap1.github.io/pruefklar/rechner.html">
+  <meta property="og:site_name" content="Prüfklar">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:image" content="https://zipzap1.github.io/pruefklar/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="627">
+  <meta property="og:image:alt" content="Prüfklar – Nie wieder eine Prüffrist verpassen. Radar-Ansicht mit einer überfälligen Prüfung der Sicherheitsbeleuchtung und einem Rauchwarnmelder, der in 7 Tagen fällig ist.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://zipzap1.github.io/pruefklar/rechner.html">
+  <meta name="theme-color" content="#0a0b0d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E1013'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23fff' stroke-width='2' opacity='.5'/%3E%3Ccircle cx='16' cy='16' r='4' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='22' cy='10' r='2.5' fill='%23F97316'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="rechner.css">
+  <script src="rechner.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="./" aria-label="Prüfklar Startseite">
+        <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x=".5" y=".5" width="31" height="31" rx="8" />
+          <circle cx="16" cy="16" r="9" class="logo__ring" />
+          <circle cx="16" cy="16" r="4" class="logo__core" />
+          <circle cx="22" cy="10" r="2.5" class="logo__blip" />
+        </svg>
+        Prüfklar
+      </a>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="./#funktionen">Funktionen</a>
+        <a href="./#fristen">Prüfintervalle</a>
+        <a href="./#pakete">Pakete</a>
+        <a href="rechner.html" aria-current="page">Fristenrechner</a>
+        <a href="./#faq">FAQ</a>
+      </nav>
+      <a class="btn btn--accent btn--sm" href="./#warteliste">Auf die Warteliste</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 1. Rechner -->
+    <section class="calc-hero dark" aria-labelledby="calc-title">
+      <div class="container calc-hero__grid">
+        <div class="calc-hero__copy">
+          <p class="eyebrow">Fristenrechner</p>
+          <h1 id="calc-title">Prüffrist berechnen.</h1>
+          <p class="lead">Anlage wählen. Datum eingeben. Fälligkeit sehen.</p>
+          <dl class="specs">
+            <div><dt>Ohne Konto</dt><dd>0&nbsp;€</dd></div>
+            <div><dt>Kalendereintrag</dt><dd>.ics</dd></div>
+            <div><dt>Im Browser berechnet</dt><dd>100&nbsp;% lokal</dd></div>
+          </dl>
+        </div>
+
+        <div class="calc" id="rechner">
+          <p class="calc__noscript" id="calc-noscript">Der Rechner benötigt JavaScript. Die typischen Intervalle finden Sie auch in der <a href="#intervalle">Tabelle weiter unten</a>.</p>
+
+          <form class="calc__form" id="calc-form" hidden>
+            <div class="calc__step">
+              <label class="calc__label" for="calc-anlage"><span class="calc__num" aria-hidden="true">1</span>Anlage</label>
+              <select class="calc__select" id="calc-anlage" required>
+                <option value="">Bitte wählen</option>
+              </select>
+              <div class="calc__facts" id="calc-facts" hidden>
+                <dl class="calc__dl">
+                  <div><dt>Intervall</dt><dd id="calc-fact-intervall"></dd></div>
+                  <div><dt>Grundlage</dt><dd id="calc-fact-grundlage"></dd></div>
+                  <div><dt>Wer prüft</dt><dd id="calc-fact-wer"></dd></div>
+                </dl>
+                <p class="calc__hint" id="calc-fact-hinweis"></p>
+              </div>
+            </div>
+
+            <div class="calc__step">
+              <label class="calc__label" for="calc-datum"><span class="calc__num" aria-hidden="true">2</span><span id="calc-datum-label">Letzte Prüfung</span></label>
+              <input class="input" id="calc-datum" type="date" required aria-describedby="calc-datum-error">
+              <p class="calc__error" id="calc-datum-error" hidden></p>
+            </div>
+
+            <div class="calc__step">
+              <label class="calc__label calc__label--sub" for="calc-bez">Bezeichnung für den Kalender (optional)</label>
+              <input class="input" id="calc-bez" type="text" maxlength="80" autocomplete="off" placeholder="z. B. Lindenstraße 12, Treppenhaus">
+            </div>
+          </form>
+
+          <p class="visually-hidden" id="calc-live" aria-live="polite"></p>
+
+          <div class="calc__result" id="calc-result" hidden>
+            <p class="calc__kicker">Nächste Fälligkeit<sup aria-hidden="true">1</sup></p>
+            <p class="calc__due"><time id="calc-due"></time></p>
+            <p><span class="pill" id="calc-status"></span></p>
+            <p class="calc__tolerance" id="calc-grace" hidden></p>
+            <p class="calc__overdue" id="calc-overdue" hidden><strong>Jetzt beauftragen.</strong> Für diesen Termin ist eine Erinnerung nicht mehr sinnvoll.</p>
+            <div class="calc__actions" id="calc-actions">
+              <label class="calc__lead">Erinnerung
+                <select class="calc__select" id="calc-lead">
+                  <option value="14">2 Wochen vorher</option>
+                  <option value="28" selected>4 Wochen vorher</option>
+                  <option value="56">8 Wochen vorher</option>
+                </select>
+              </label>
+              <button class="btn btn--ghost" type="button" id="calc-ics"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" /><path d="M3.5 10h17M8 3v4M16 3v4M12 13v4M10 15h4" /></svg>In den Kalender (.ics)</button>
+            </div>
+            <p class="calc__tolerance" id="calc-far" hidden>Die Fälligkeit liegt mehr als zwei Jahre entfernt – dafür gibt es keine E-Mail-Erinnerung. Bitte nutzen Sie den Kalendereintrag.</p>
+            <p class="calc__more">Mehrere Objekte? <a href="./">Prüfklar entdecken</a></p>
+            <p class="calc__fine"><span aria-hidden="true">1 </span>Typisches Intervall nach den genannten Regelwerken, Stand Oktober 2026 – unverbindlich, keine Rechtsberatung. Je nach Landesrecht, Baugenehmigung, Gefährdungsbeurteilung, Herstellerangaben oder Versicherer können kürzere Fristen gelten.</p>
+          </div>
+
+          <!-- Zwei Brevo-Formulare (Simple HTML), Einrichtung: _intern/brevo-erinnerung.md.
+               action = Formular A „Erinnerung“, data-action-waitlist = Formular B „Erinnerung + Warteliste“.
+               Solange ein Platzhalter steht, ist das Formular gesperrt. -->
+          <form class="calc__remind" id="remind-form" action="BREVO_FORMULAR_URL_ERINNERUNG" data-action-waitlist="BREVO_FORMULAR_URL_WARTELISTE" method="post" hidden>
+            <h2>Erinnerung per E-Mail</h2>
+            <p class="calc__note">Einmalig am <strong id="remind-date"></strong><span id="remind-why"></span>. Danach löschen wir die Erinnerungsdaten.</p>
+            <p class="calc__unavailable" id="remind-unavailable" hidden>Bald verfügbar. Bis dahin hilft der Kalendereintrag.</p>
+            <fieldset id="remind-fields">
+              <legend class="visually-hidden">E-Mail-Erinnerung anfordern</legend>
+              <div class="signup__row">
+                <label class="visually-hidden" for="remind-email">E-Mail-Adresse</label>
+                <input class="input" id="remind-email" type="email" name="EMAIL" autocomplete="email" placeholder="name@hausverwaltung.de" required aria-describedby="remind-help">
+                <button class="btn btn--accent" type="submit">Erinnerung anfordern</button>
+              </div>
+              <p class="calc__fine" id="remind-help">Zuerst kommt eine Bestätigungs-E-Mail; ohne Ihren Klick darin erhalten Sie keine weitere Nachricht. Pro E-Mail-Adresse ist eine Erinnerung aktiv. Zustellung ohne Gewähr – tragen Sie die Frist zusätzlich in Ihren Kalender ein.</p>
+              <label class="consent">
+                <input type="checkbox" name="OPT_IN" value="1" required>
+                <span>Ja, ich möchte eine einmalige Erinnerung an diese Prüfung per E-Mail erhalten. Dafür verarbeitet Haci Ibrahim Dogan meine E-Mail-Adresse, die gewählte Prüfung sowie Fälligkeits- und Erinnerungsdatum mit dem E-Mail-Dienst Brevo (Brevo GmbH, Berlin). Die Erinnerungsdaten werden nach dem Versand gelöscht; der Nachweis meiner Einwilligung wird aufbewahrt, solange er zur Abwehr von Ansprüchen nötig ist (in der Regel bis zu drei Jahre). Ich kann die Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, z.&nbsp;B. über den Link in der E-Mail oder an info@closelyst.com. Details in der <a href="datenschutz.html#fristenrechner">Datenschutzerklärung</a>.</span>
+              </label>
+              <label class="consent">
+                <input type="checkbox" id="remind-warteliste">
+                <span>Optional: Ich möchte außerdem per E-Mail über den Start von Prüfklar und das Gründerplatz-Angebot informiert werden (Warteliste) – von Haci Ibrahim Dogan, versendet über Brevo. Die Erinnerung erhalte ich auch ohne dieses Häkchen. Diese Einwilligung kann ich jederzeit getrennt widerrufen.</span>
+              </label>
+            </fieldset>
+            <input type="text" name="email_address_check" value="" hidden>
+            <input type="hidden" name="locale" value="de">
+            <input type="hidden" name="html_type" value="simple">
+            <input type="hidden" name="ANLAGE" id="remind-anlage">
+            <input type="hidden" name="FAELLIG_AM" id="remind-faellig">
+            <input type="hidden" name="ERINNERUNG_AM" id="remind-erinnerung">
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Rechner oder Prüfklar -->
+    <section class="section" aria-labelledby="mehr-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Rechner oder Prüfklar</p>
+          <h2 id="mehr-title">Eine Anlage oder 40&nbsp;Objekte.</h2>
+        </div>
+        <ul class="compare" role="list">
+          <li class="compare__card">
+            <div class="compare__top"><h3>Fristenrechner</h3><span class="compare__tag">Kostenlos</span></div>
+            <p class="compare__price">0&nbsp;€ · ohne Konto</p>
+            <ul class="checks" role="list">
+              <li>Eine Anlage mit Norm und Intervall</li>
+              <li>Fälligkeit und Kalendereintrag</li>
+              <li>Eine E-Mail-Erinnerung</li>
+            </ul>
+          </li>
+          <li class="compare__card dark">
+            <div class="compare__top"><h3>Prüfklar</h3><span class="compare__tag">In Entwicklung</span></div>
+            <p class="compare__price">Ab 39&nbsp;€ pro Monat, netto · geplant, unverbindlich</p>
+            <ul class="checks" role="list">
+              <li>Alle Objekte und Anlagen in einer Übersicht</li>
+              <li>Wiederkehrende Erinnerungen</li>
+              <li>Zuständige, Nachweise, Team</li>
+            </ul>
+            <div class="compare__cta">
+              <a class="btn btn--accent" href="./#warteliste">Auf die Warteliste</a>
+              <a href="./#pakete">Pakete ansehen</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Intervalltabelle: einzige Datenquelle des Rechners (rechner.js liest die Zeilen mit data-id) -->
+    <section class="section section--tint" id="intervalle" aria-labelledby="intervalle-title">
+      <div class="container">
+        <div class="section__head section__head--split">
+          <p class="eyebrow">Prüfintervalle</p>
+          <h2 id="intervalle-title">Prüffristen.</h2>
+          <p class="lead">Die Werte des Rechners – für das typische Wohn- und Geschäftshaus.</p>
+        </div>
+        <div class="ptable-wrap">
+          <table class="ptable">
+            <caption class="visually-hidden">Häufige Prüffristen je Anlage mit Grundlage, prüfender Stelle und Hinweis</caption>
+            <thead>
+              <tr><th scope="col">Anlage · Prüfung</th><th scope="col">Intervall</th><th scope="col">Grundlage</th><th scope="col">Wer prüft</th><th scope="col">Hinweis</th></tr>
+            </thead>
+            <tbody>
+              <tr data-id="rauchwarnmelder" data-months="12" data-grace="3" data-basis="Letzte Inspektion und Wartung">
+                <th scope="row"><span data-field="anlage">Rauchwarnmelder</span><span class="visually-hidden">, </span><small data-field="pruefung">Inspektion und Wartung</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich, höchstens 3&nbsp;Monate später</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN 14676-1:2025-05; Landesbauordnung</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachkraft für Rauchwarnmelder</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Wer zuständig ist – Eigentümer oder Mieter –, regelt die Landesbauordnung.</td>
+              </tr>
+              <tr data-id="aufzug-hauptpruefung" data-months="24" data-grace="2" data-basis="Letzte Hauptprüfung">
+                <th scope="row"><span data-field="anlage">Aufzug</span><span class="visually-hidden">, </span><small data-field="pruefung">Hauptprüfung</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">höchstens alle 2&nbsp;Jahre</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">BetrSichV Anh. 2 Abschn. 2 Nr. 4.1</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Zugelassene Überwachungsstelle (ZÜS)</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Fristgerecht bis 2&nbsp;Monate nach Fälligkeit; bei verspäteter Prüfung zählt die Fälligkeit, nicht der Prüftag (§ 14 Abs. 5 BetrSichV).</td>
+              </tr>
+              <tr data-id="aufzug-zwischenpruefung" data-months="12" data-grace="2" data-basis="Letzte Hauptprüfung">
+                <th scope="row"><span data-field="anlage">Aufzug</span><span class="visually-hidden">, </span><small data-field="pruefung">Zwischenprüfung</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">12&nbsp;Monate nach der Hauptprüfung</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">BetrSichV Anh. 2 Abschn. 2 Nr. 4.3</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Zugelassene Überwachungsstelle (ZÜS)</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Gilt bei 2-jähriger Hauptprüffrist; ist sie kürzer, liegt die Zwischenprüfung früher.</td>
+              </tr>
+              <tr data-id="sicherheitsbeleuchtung-jahrespruefung" data-months="12" data-basis="Letzte Jahresprüfung">
+                <th scope="row"><span data-field="anlage">Sicherheitsbeleuchtung</span><span class="visually-hidden">, </span><small data-field="pruefung">Jahresprüfung mit Betriebsdauertest</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 50172 (VDE 0108-100):2024-10</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Elektrofachkraft (Fachfirma)</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Dazu monatliche Funktionsprüfung. Im normalen Wohnhaus meist nicht vorhanden.</td>
+              </tr>
+              <tr data-id="feuerloescher" data-months="24" data-basis="Letzte Instandhaltung">
+                <th scope="row"><span data-field="anlage">Feuerlöscher</span><span class="visually-hidden">, </span><small data-field="pruefung">Instandhaltung</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 2&nbsp;Jahre</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">ASR A2.2 Nr. 7.4.2; DIN 14406-4</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundiger</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Pflicht in Arbeitsstätten. Kürzere Herstellerfristen gehen vor.</td>
+              </tr>
+              <tr data-id="trinkwasser-legionellen" data-months="36" data-basis="Letzte Probennahme">
+                <th scope="row"><span data-field="anlage">Trinkwasser</span><span class="visually-hidden">, </span><small data-field="pruefung">Untersuchung auf Legionellen</small></th>
+                <td class="ptable__interval" data-label="Intervall" data-field="intervall">mindestens alle 3&nbsp;Jahre</td>
+                <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">TrinkwV 2023 § 31</td>
+                <td class="ptable__who" data-label="Wer prüft" data-field="wer">Zugelassene Untersuchungsstelle</td>
+                <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Nur Großanlagen (über 400 l oder über 3 l Leitungsinhalt) mit Duschen in vermieteten Gebäuden.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="ptable-more">
+          <summary>Alle weiteren Fristen</summary>
+          <div class="ptable-wrap">
+            <table class="ptable">
+              <caption class="visually-hidden">Weitere Prüffristen je Anlage mit Grundlage, prüfender Stelle und Hinweis</caption>
+              <thead>
+                <tr><th scope="col">Anlage · Prüfung</th><th scope="col">Intervall</th><th scope="col">Grundlage</th><th scope="col">Wer prüft</th><th scope="col">Hinweis</th></tr>
+              </thead>
+              <tbody>
+                <tr data-id="sicherheitsbeleuchtung-messung" data-months="36" data-basis="Letzte Messung">
+                  <th scope="row"><span data-field="anlage">Sicherheitsbeleuchtung</span><span class="visually-hidden">, </span><small data-field="pruefung">Messung der Beleuchtungsstärke</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 3&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN VDE V 0108-100-1:2018-12; DIN EN 50172:2024-10</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachfirma</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Die Neufassung 2024 verlangt 5 Jahre; der Rechner rechnet vorsichtig mit 3.</td>
+                </tr>
+                <tr data-id="sicherheitsbeleuchtung-pruefvo" data-months="36" data-basis="Letzte Sachverständigenprüfung">
+                  <th scope="row"><span data-field="anlage">Sicherheitsbeleuchtung</span><span class="visually-hidden">, </span><small data-field="pruefung">Prüfung durch Prüfsachverständigen</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 3&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">Prüfverordnung des Landes, z. B. PrüfVO NRW</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Prüfsachverständiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Nur Sonderbauten und Garagen im Anwendungsbereich der Landes-PrüfVO.</td>
+                </tr>
+                <tr data-id="elektro-ortsfest" data-months="48" data-basis="Letzte Wiederholungsprüfung">
+                  <th scope="row"><span data-field="anlage">Elektrische Anlage</span><span class="visually-hidden">, </span><small data-field="pruefung">Wiederholungsprüfung (ortsfest)</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 4&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DGUV Vorschrift 3, Tabelle 1A</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Elektrofachkraft</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Pflicht in Arbeitsstätten. Für reine Wohnhäuser keine feste gesetzliche Frist – 4&nbsp;Jahre als Orientierung.</td>
+                </tr>
+                <tr data-id="spielplatz-hauptinspektion" data-months="12" data-basis="Letzte Hauptinspektion">
+                  <th scope="row"><span data-field="anlage">Spielplatz</span><span class="visually-hidden">, </span><small data-field="pruefung">Jährliche Hauptinspektion</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 1176-7:2020-06</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Spielplatzprüfer (DIN 79161)</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Herstellerangaben können kürzere Intervalle verlangen.</td>
+                </tr>
+                <tr data-id="spielplatz-operativ" data-months="3" data-basis="Letzte operative Inspektion">
+                  <th scope="row"><span data-field="anlage">Spielplatz</span><span class="visually-hidden">, </span><small data-field="pruefung">Operative Inspektion</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">spätestens alle 3&nbsp;Monate</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 1176-7:2020-06</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundige Person, z. B. geschulter Hausmeister</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Bei starker Nutzung kürzer. Dazu Sichtkontrolle täglich bis wöchentlich.</td>
+                </tr>
+                <tr data-id="gas-sichtkontrolle" data-months="12" data-basis="Letzte Sichtkontrolle">
+                  <th scope="row"><span data-field="anlage">Gasleitung</span><span class="visually-hidden">, </span><small data-field="pruefung">Sichtkontrolle</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DVGW-TRGI 2018 (G 600)</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Betreiber oder Fachbetrieb</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Anerkannte Regel der Technik; ersetzt nicht die 12-Jahres-Prüfung.</td>
+                </tr>
+                <tr data-id="gas-gebrauchsfaehigkeit" data-months="144" data-basis="Letzte Gebrauchsfähigkeitsprüfung">
+                  <th scope="row"><span data-field="anlage">Gasleitung</span><span class="visually-hidden">, </span><small data-field="pruefung">Prüfung auf Gebrauchsfähigkeit</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 12&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DVGW-TRGI 2018 (G 600)</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Eingetragener Installateurbetrieb</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Gerätewartung und Schornsteinfeger ersetzen diese Prüfung nicht.</td>
+                </tr>
+                <tr data-id="blitzschutz" data-months="48" data-basis="Letzte umfassende Prüfung">
+                  <th scope="row"><span data-field="anlage">Blitzschutz</span><span class="visually-hidden">, </span><small data-field="pruefung">Umfassende Prüfung (Klasse III/IV)</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 4&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 62305-3:2011-10, Tabelle E.2</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Blitzschutz-Fachkraft</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Dazwischen Sichtprüfung nach 2&nbsp;Jahren. Die Neuausgabe 2025 nennt keine Fristen mehr – mit der Fachfirma abstimmen.</td>
+                </tr>
+                <tr data-id="hebeanlage" data-months="6" data-basis="Letzte Wartung">
+                  <th scope="row"><span data-field="anlage">Abwasserhebeanlage</span><span class="visually-hidden">, </span><small data-field="pruefung">Wartung (Mehrfamilienhaus)</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">halbjährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 12056-4</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachkundiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Bei gewerblicher Nutzung vierteljährlich. Dazu monatliche Kontrolle durch den Betreiber.</td>
+                </tr>
+                <tr data-id="rueckstauverschluss" data-months="6" data-basis="Letzte Wartung">
+                  <th scope="row"><span data-field="anlage">Rückstauverschluss</span><span class="visually-hidden">, </span><small data-field="pruefung">Wartung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">halbjährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN EN 13564-1; DIN 1986-3</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Dazu monatlich den Notverschluss betätigen. Herstellerangaben beachten.</td>
+                </tr>
+                <tr data-id="tor-kraftbetaetigt" data-months="12" data-basis="Letzte Prüfung">
+                  <th scope="row"><span data-field="anlage">Kraftbetätigtes Tor</span><span class="visually-hidden">, </span><small data-field="pruefung">Sicherheitstechnische Prüfung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">mindestens jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">ASR A1.7 Nr. 10.2</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundiger (Torfachbetrieb)</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Pflicht in Arbeitsstätten; in reinen Wohngaragen Empfehlung nach Herstellerangaben.</td>
+                </tr>
+                <tr data-id="absturzsicherung" data-months="12" data-basis="Letzte Prüfung">
+                  <th scope="row"><span data-field="anlage">Absturzsicherung (Dach)</span><span class="visually-hidden">, </span><small data-field="pruefung">Prüfung der Anschlageinrichtungen</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">höchstens alle 12&nbsp;Monate</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DGUV Information 201-056 (2025)</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Kürzere Herstellerfristen gehen vor.</td>
+                </tr>
+                <tr data-id="feststellanlage" data-months="12" data-basis="Letzte Prüfung und Wartung">
+                  <th scope="row"><span data-field="anlage">Feststellanlage (Brandschutztür)</span><span class="visually-hidden">, </span><small data-field="pruefung">Prüfung und Wartung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN 14677-1; Bauartgenehmigung</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachkraft für Feststellanlagen</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Dazu monatliche Prüfung durch den Betreiber.</td>
+                </tr>
+                <tr data-id="rwa-wartung" data-months="12" data-basis="Letzte Wartung">
+                  <th scope="row"><span data-field="anlage">Rauchabzug (RWA)</span><span class="visually-hidden">, </span><small data-field="pruefung">Wartung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN 18232-2; Herstellerangaben</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachfirma</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Auch Rauchabzug im Treppenhaus. Dazu halbjährliche Sichtkontrolle.</td>
+                </tr>
+                <tr data-id="wandhydrant" data-months="12" data-basis="Letzte Instandhaltung">
+                  <th scope="row"><span data-field="anlage">Wandhydrant</span><span class="visually-hidden">, </span><small data-field="pruefung">Instandhaltung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN 14462:2023-07</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Sachkundige Person</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Löschwasserleitung nass und nass/trocken. Dazu monatliche Kontrolle durch den Betreiber.</td>
+                </tr>
+                <tr data-id="bma-wartung" data-months="12" data-basis="Letzte Wartung">
+                  <th scope="row"><span data-field="anlage">Brandmeldeanlage</span><span class="visually-hidden">, </span><small data-field="pruefung">Wartung</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">jährlich</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">DIN VDE 0833-1; DIN 14675-1</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Fachfirma nach DIN 14675</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Dazu Inspektion viermal im Jahr.</td>
+                </tr>
+                <tr data-id="bma-pruefvo" data-months="36" data-basis="Letzte Sachverständigenprüfung">
+                  <th scope="row"><span data-field="anlage">Brandmeldeanlage</span><span class="visually-hidden">, </span><small data-field="pruefung">Prüfung durch Prüfsachverständigen</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 3&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">Prüfverordnung des Landes</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Prüfsachverständiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Nur wo bauordnungsrechtlich gefordert, z. B. in Sonderbauten.</td>
+                </tr>
+                <tr data-id="tiefgarage-lueftung" data-months="36" data-basis="Letzte Sachverständigenprüfung">
+                  <th scope="row"><span data-field="anlage">Tiefgarage</span><span class="visually-hidden">, </span><small data-field="pruefung">Lüftungsanlage: Prüfung durch Prüfsachverständigen</small></th>
+                  <td class="ptable__interval" data-label="Intervall" data-field="intervall">alle 3&nbsp;Jahre</td>
+                  <td class="ptable__norm" data-label="Grundlage" data-field="grundlage">Prüfverordnung des Landes</td>
+                  <td class="ptable__who" data-label="Wer prüft" data-field="wer">Prüfsachverständiger</td>
+                  <td class="ptable__hint" data-label="Hinweis" data-field="hinweis">Nur geschlossene Mittel- und Großgaragen mit maschineller Lüftung.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <p class="footnote">Stand: Oktober 2026. Orientierung, keine Rechtsberatung. Maßgeblich sind die für Ihr Objekt geltenden Vorschriften, Auflagen, Gefährdungsbeurteilung und Herstellerangaben; kürzere Fristen gehen vor.</p>
+      </div>
+    </section>
+
+    <!-- 4. FAQ -->
+    <section class="section" id="faq-rechner" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div class="section__head">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Fragen.</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Werden meine Eingaben gespeichert?</summary>
+            <p>Nein. Alles bleibt in Ihrem Browser – außer Sie fordern die E-Mail-Erinnerung an. Dann erhält unser Versanddienst Brevo E-Mail-Adresse, Prüfung und Termine.</p>
+          </details>
+          <details>
+            <summary>Wie verlässlich sind die Intervalle?</summary>
+            <p>Sie zeigen den typischen Fall. Je nach Gebäude, Bundesland und Hersteller können kürzere Fristen gelten.</p>
+          </details>
+          <details>
+            <summary>Warum nur eine Erinnerung?</summary>
+            <p>Der Rechner ist eine Einzelrechnung. Wiederkehrende Erinnerungen für alle Objekte gibt es mit Prüfklar.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span>© 2026 Prüfklar</span>
+      <nav aria-label="Rechtliches">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
