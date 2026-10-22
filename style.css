@@ -588,6 +588,18 @@ a { color: inherit; }
 .footnote { max-width: 46rem; margin-top: 1.25rem; color: var(--night-muted); font-size: 0.8125rem; }
 .fristen-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 2rem; color: var(--night-muted); font-size: 0.875rem; }
 
+/* Geplante KI-Funktionen (unter der Lösung) */
+.ai-plan {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 1.5rem clamp(2rem, 5vw, 4rem);
+  margin-top: clamp(2.5rem, 5vw, 3.5rem); padding: clamp(1.5rem, 4vw, 2.25rem);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel);
+}
+.ai-plan__head h3 { margin: 0.5rem 0 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+.ai-plan__list { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.ai-plan__list li { display: grid; gap: 0.25rem; }
+.ai-plan__list span { color: var(--muted); }
+.ai-plan__note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.8125rem; }
+
 /* Kostenloser Fristen-Check */
 .check-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; padding: 0; list-style: none; }
 .check-step { display: grid; align-content: start; gap: 0.625rem; padding: 1.75rem; background: var(--night-2); border: 1px solid var(--night-line); border-radius: var(--r-panel); }
@@ -719,7 +731,7 @@ a { color: inherit; }
 @media (max-width: 960px) {
   .site-header__inner { gap: 1.5rem; }
   .site-nav { gap: 1rem; } /* fünf Einträge passen bis 761px neben Logo und Button */
-  .hero__grid, .section__head--split, .faq-grid, .problems, .cards, .check-steps { grid-template-columns: 1fr; }
+  .hero__grid, .section__head--split, .faq-grid, .problems, .cards, .check-steps, .ai-plan { grid-template-columns: 1fr; }
   .scard--a { left: 0; }
   .problem { grid-template: auto auto 1fr / minmax(0, 1fr) minmax(0, 1fr); column-gap: 2rem; }
   .problem > * { grid-column: 2; }
