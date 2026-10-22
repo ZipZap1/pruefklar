@@ -127,6 +127,7 @@
       days: daysBetween(today, due),
       latest,
       inGrace: latest !== null && due < today && today <= latest,
+      graceOpen: latest !== null && today <= latest, // nach Ablauf der Toleranz kein "Noch fristgerecht bis" mehr
       reminder,
       reminderMoved: plannedReminder <= today,
       reminderTooFar: daysBetween(today, reminder) > MAX_REMINDER_DAYS,
@@ -292,7 +293,7 @@
     el.due.dateTime = isoDate(result.due);
     el.status.className = `pill ${status.tone}`;
     el.status.textContent = status.text;
-    renderGrace(result.latest);
+    renderGrace(result.graceOpen ? result.latest : null);
     el.actions.hidden = isDue;
     el.overdue.hidden = !isDue;
     el.far.hidden = isDue || canRemind;
